@@ -23,5 +23,4 @@ Tenha histórico completo do rebanho em qualquer lugar
 
 Interface simples e feita para o campo
 
-👨‍🌾 Feito por produtores, para produtores!
-Tecnologia que entende a realidade da pecuária brasileira.
+👨‍🌾 Tecnologia que entende a realidade da pecuária brasileira.

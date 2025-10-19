@@ -22,8 +22,11 @@ class CattleDetailScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Detalhes - ${cattle.identifier}'),
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            labelColor: const Color.fromARGB(255, 0, 0, 0), // Cor do texto/ícone da aba selecionada
+            unselectedLabelColor: Colors.white70, // Cor das não selecionadas
+            indicatorColor: const Color.fromARGB(255, 47, 104, 0), // Linha de destaque abaixo da aba
+            tabs: const [
               Tab(text: 'Vacinação', icon: Icon(Icons.medical_services)),
               Tab(text: 'Inseminação', icon: Icon(Icons.science)),
               Tab(text: 'Peso', icon: Icon(Icons.monitor_weight)),
@@ -65,8 +68,10 @@ class CattleDetailScreen extends StatelessWidget {
                           horizontal: 15, vertical: 5),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: const Icon(Icons.medical_services, color: Colors.white),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          child: const Icon(Icons.medical_services,
+                              color: Color.fromARGB(255, 0, 0, 0)),
                         ),
                         title: Text(vaccination.name),
                         subtitle: Text(
@@ -118,8 +123,9 @@ class CattleDetailScreen extends StatelessWidget {
                           horizontal: 15, vertical: 5),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: const Icon(Icons.science, color: Colors.white),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          child: const Icon(Icons.science, color: Color.fromARGB(255, 0, 0, 0)),
                         ),
                         title: Text(
                             'Data: ${DateFormat('dd/MM/yyyy').format(insemination.date)}'),
@@ -186,9 +192,10 @@ class CattleDetailScreen extends StatelessWidget {
                           horizontal: 15, vertical: 5),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child:
-                              const Icon(Icons.monitor_weight, color: Colors.white),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          child: const Icon(Icons.monitor_weight,
+                              color: Color.fromARGB(255, 0, 0, 0)),
                         ),
                         title: Text(
                             '${weightRecord.weight.toStringAsFixed(2)} kg'),

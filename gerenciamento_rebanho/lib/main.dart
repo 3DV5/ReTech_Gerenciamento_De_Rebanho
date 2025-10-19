@@ -6,14 +6,14 @@ import 'providers/cattle_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   final farmProvider = FarmProvider();
   final cattleProvider = CattleProvider();
-  
+
   // Carrega os dados iniciais
   await farmProvider.loadFarms();
   await cattleProvider.loadCattle();
-  
+
   runApp(MyApp(
     farmProvider: farmProvider,
     cattleProvider: cattleProvider,
@@ -43,7 +43,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.green,
-            accentColor: Colors.amber,
+          ).copyWith(
+            secondary: Colors.amber,
           ),
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.green,

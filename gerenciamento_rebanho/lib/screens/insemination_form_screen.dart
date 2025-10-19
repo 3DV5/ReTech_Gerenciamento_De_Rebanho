@@ -86,7 +86,10 @@ class _InseminationFormScreenState extends State<InseminationFormScreen> {
         title: const Text('Nova Inseminação'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
+            icon: const Icon(
+              Icons.save,
+              color: Color.fromARGB(255, 39, 78, 3), // 🔹 define a cor diretamente
+            ),
             onPressed: _saveForm,
           ),
         ],
@@ -106,9 +109,10 @@ class _InseminationFormScreenState extends State<InseminationFormScreen> {
                           const Text('Data da Inseminação: '),
                           TextButton(
                             child: Text(
-                              DateFormat('dd/MM/yyyy')
-                                  .format(_inseminationData['date'] as DateTime),
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              DateFormat('dd/MM/yyyy').format(
+                                  _inseminationData['date'] as DateTime),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             onPressed: () => _selectDate(context),
                           ),
@@ -125,7 +129,8 @@ class _InseminationFormScreenState extends State<InseminationFormScreen> {
                       },
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(labelText: 'Observações'),
+                      decoration:
+                          const InputDecoration(labelText: 'Observações'),
                       maxLines: 3,
                       keyboardType: TextInputType.multiline,
                       onSaved: (value) {

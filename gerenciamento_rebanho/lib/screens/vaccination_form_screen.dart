@@ -17,8 +17,8 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
   final _formKey = GlobalKey<FormState>();
   var _isLoading = false;
   final _vaccinationData = {
-    'name': '',
     'date': DateTime.now(),
+    'name': '',
     'notes': '',
   };
 
@@ -38,9 +38,8 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
 
   Future<void> _saveForm() async {
     final isValid = _formKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
+    if (!isValid) return;
+
     _formKey.currentState!.save();
     setState(() {
       _isLoading = true;
@@ -48,13 +47,14 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
 
     try {
       final vaccination = Vaccination.create(
-        name: _vaccinationData['name'] as String,
         date: _vaccinationData['date'] as DateTime,
+        name: _vaccinationData['name'] as String,
         notes: _vaccinationData['notes'] as String,
       );
 
       await Provider.of<CattleProvider>(context, listen: false)
           .addVaccination(widget.cattleId, vaccination);
+
       Navigator.of(context).pop();
     } catch (error) {
       await showDialog(
@@ -65,9 +65,7 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
           actions: [
             TextButton(
               child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
+              onPressed: () => Navigator.of(ctx).pop(),
             ),
           ],
         ),
@@ -79,6 +77,53 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
     });
   }
 
+  Future<void> _confirmSave() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Row(
+          children: const [
+            Icon(Icons.warning_amber_rounded, color: Colors.black, size: 30),
+            SizedBox(width: 10),
+            Text(
+              'Confirmação',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Deseja realmente salvar esta vacinação?',
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: Colors.grey),
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Confirmar'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      _saveForm();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,8 +131,8 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
         title: const Text('Nova Vacinação'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _saveForm,
+            icon: const Icon(Icons.save, color: Color.fromARGB(255, 39, 78, 3)),
+            onPressed: _confirmSave,
           ),
         ],
       ),
@@ -99,19 +144,6 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
                 key: _formKey,
                 child: ListView(
                   children: [
-                    TextFormField(
-                      decoration: const InputDecoration(labelText: 'Nome da Vacina'),
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor, informe o nome da vacina';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _vaccinationData['name'] = value!;
-                      },
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Row(
@@ -129,6 +161,18 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
                       ),
                     ),
                     TextFormField(
+                      decoration: const InputDecoration(labelText: 'Nome da Vacina'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Informe o nome da vacina';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _vaccinationData['name'] = value ?? '';
+                      },
+                    ),
+                    TextFormField(
                       decoration: const InputDecoration(labelText: 'Observações'),
                       maxLines: 3,
                       keyboardType: TextInputType.multiline,
@@ -138,7 +182,7 @@ class _VaccinationFormScreenState extends State<VaccinationFormScreen> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _saveForm,
+                      onPressed: _confirmSave,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                       ),
